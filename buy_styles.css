@@ -1,0 +1,181 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    margin: 0;
+    padding: 1.5rem;
+    border-bottom: 4px solid #444;
+}
+
+/* Main Container */
+main {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling (Buyer View) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td {
+    color: #555;
+}
+
+/* Form Styling (Create Order) */
+form {
+    max-width: 800px;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin: 0.5rem 0 0.25rem;
+    color: #555;
+}
+
+form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/* Buttons */
+button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="button"] {
+    background-color: #555;
+    color: white;
+    margin-right: 0.5rem;
+}
+
+button[type="button"]:hover {
+    background-color: #777;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+/* Product Section (Create Order) */
+#product-section > div {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#product-section label {
+    display: inline-block;
+    width: auto;
+    margin: 0.25rem 0.5rem 0.25rem 0;
+    font-weight: bold;
+    color: #444;
+}
+
+#product-section input {
+    display: inline-block;
+    width: calc(50% - 1rem);
+    margin: 0.5rem 0;
+}
+
+/* Action Buttons (Buyer View) */
+.action-buttons {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.action-buttons button {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    margin: 0.5rem;
+}
+
+.action-buttons button:hover {
+    background-color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    form {
+        padding: 1rem;
+    }
+
+    form label, form input {
+        width: 100%;
+    }
+
+    #product-section input {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}

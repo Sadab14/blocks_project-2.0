@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("INSERT INTO product (name, price, category, quantity) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("sdsi", $name, $price, $category, $quantity);
         $stmt->execute();
-        echo "Product added successfully!";
+        
     }
     
     if (isset($_POST['update_product'])) {
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("UPDATE product SET name=?, price=?, category=?, quantity=? WHERE product_id=?");
         $stmt->bind_param("sdsii", $name, $price, $category, $quantity, $product_id);
         $stmt->execute();
-        echo "Product updated successfully!";
+        
     }
     
     if (isset($_POST['delete_product'])) {
@@ -33,18 +33,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("DELETE FROM product WHERE product_id=?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
-        echo "Product deleted successfully!";
-    }
-
-    
-    if (isset($_POST['reset_table'])) {
         
-        $conn->query("DELETE FROM product");
-        $conn->query("ALTER TABLE product AUTO_INCREMENT = 1");
+    }
+    if (isset($_POST['delete_order'])) {
+        $order_id = $_POST['order_id'];
 
-        echo "All products deleted and table reset successfully!";
+        // Delete related order details first
+        $stmt = $conn->prepare("DELETE FROM `order_details` WHERE order_id = ?");
+        $stmt->bind_param("i", $order_id);
+        $stmt->execute();
+
+        // Delete the order
+        $stmt = $conn->prepare("DELETE FROM `order` WHERE order_id = ?");
+        $stmt->bind_param("i", $order_id);
+        $stmt->execute();
+        
     }
 }
+
+    
+
 ?>
 
 <!DOCTYPE html>
@@ -52,11 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Product Management</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Admin view</title>
+    <link rel="stylesheet" href="admin_styles.css">
 </head>
 <body>
-    <h1>Admin - Product View</h1>
+    <h1>Admin View</h1>
     <h2>Add Product</h2>
     <form method="POST" action="product.php">
         <label>Product Name:</label>
@@ -119,13 +127,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "No products found.";
     }
     
+    
+    ?>
+    
+    <h2>Manage Orders</h2>
+    <?php
+    $result = $conn->query("SELECT o.order_id, o.buyer_id, o.order_date, b.username AS buyer_name FROM `order` o JOIN buyer b ON o.buyer_id = b.buyer_id");
+
+    if ($result && $result->num_rows > 0) {
+        echo "<table>
+                
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Buyer Name</th>
+                        <th>Order Date</th>
+                        <th>Actions</th>
+                    </tr>
+                
+                <tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>
+                    <td>" . htmlspecialchars($row['order_id']) . "</td>
+                    <td>" . htmlspecialchars($row['buyer_name']) . "</td>
+                    <td>" . htmlspecialchars($row['order_date']) . "</td>
+                    <td>
+                        <form method='POST' action='product.php' style='display: inline-block;'>
+                            <input type='hidden' name='order_id' value='" . htmlspecialchars($row['order_id']) . "'>
+                            <button type='submit' name='delete_order'>Delete Order</button>
+                        </form>
+                    </td>
+                </tr>";
+        }
+        echo "</tbody>
+            </table>";
+    } else {
+        echo "<p>No orders found.</p>";
+    }
     $conn->close();
     ?>
-    <form method="POST">
-        <button type="submit" name="reset_table" style="background-color: #e74c3c; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">
-            Delete All Products & Reset Table
-        </button>
-    </form>
+        
 </body>
 </html>
-
